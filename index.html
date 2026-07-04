@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weight Model Predictor</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; line-height: 1.6; }
-        .container { background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #0056b3; }
-        #result { margin-top: 20px; font-weight: bold; padding: 10px; background: #e9ecef; border-left: 5px solid #007bff; display: none; white-space: pre-wrap; }
-        #preview { max-width: 100%; max-height: 200px; display: none; margin: 10px auto; border-radius: 4px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Weight Model Predictor</h2>
-        <label for="imageInput">Upload an image for classification:</label>
-        <!-- Changed input type from 'text' to 'file' for image selections -->
-        <input type="file" id="imageInput" accept="image/*">
-        
-        <img id="preview" alt="Image Preview">
-        <button id="predictBtn">Run Prediction</button>
-        <div id="result"></div>
-    </div>
-
-    <script type="module" src="app.js"></script>
-</body>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+  </head>
+  <body>
+    <header>
+        <h1>Weight Model Predictor</h1>
+        <p>API hosted by <a href="https://huggingface.co" target="_blank">Hugging Face</a></p>
+    </header>
+    <main>
+        <header>
+            <h2>Submit a picture for classification</h2>
+            <!-- Containers to show results -->
+            <p id="prediction" style="font-weight: bold; color: #007bff;"></p>
+            <p id="confidences"></p>
+            <p id="status_msg" style="color: #666;"></p>
+        </header>
+        <section>
+            <img id="myImage" height="400" width="400" style="display:none; object-fit: contain; margin-bottom: 20px;">
+            <form id="form">
+                <label for="fileInput">Choose Image File:</label>
+                <input id="fileInput" type="file" onchange="onFileSelected(event)" name="File">
+            </form>
+        </section>
+    </main>
+    <!-- Change index.js to app.js to match your filename structure -->
+    <script src="app.js"></script>
+  </body>
 </html>
