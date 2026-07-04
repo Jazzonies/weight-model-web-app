@@ -10,21 +10,22 @@
         input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
         button { background-color: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
         button:hover { background-color: #0056b3; }
-        #result { margin-top: 20px; font-weight: bold; padding: 10px; background: #e9ecef; border-left: 5px solid #007bff; display: none; }
+        #result { margin-top: 20px; font-weight: bold; padding: 10px; background: #e9ecef; border-left: 5px solid #007bff; display: none; white-space: pre-wrap; }
+        #preview { max-width: 100%; max-height: 200px; display: none; margin: 10px auto; border-radius: 4px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Weight Model Predictor</h2>
-        <label for="modelInput">Enter Model Input Data:</label>
-        <!-- Adjust the input placeholder or type based on your actual feature inputs -->
-        <input type="text" id="modelInput" placeholder="e.g., height, age, parameters...">
+        <label for="imageInput">Upload an image for classification:</label>
+        <!-- Changed input type from 'text' to 'file' for image selections -->
+        <input type="file" id="imageInput" accept="image/*">
         
+        <img id="preview" alt="Image Preview">
         <button id="predictBtn">Run Prediction</button>
         <div id="result"></div>
     </div>
 
-    <!-- Include your script asset as a module -->
     <script type="module" src="app.js"></script>
 </body>
 </html>
