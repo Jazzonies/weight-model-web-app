@@ -4,38 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Classifier</title>
-    <!-- Import Gradio Client directly via CDN -->
-    <script type="module">
-        import { Client } from "https://jsdelivr.net";
-
-        const imageInput = document.getElementById("imageInput");
-        const uploadBtn = document.getElementById("uploadBtn");
-        const resultDiv = document.getElementById("result");
-
-        uploadBtn.addEventListener("click", async () => {
-            const file = imageInput.files[0];
-            if (!file) return alert("Please select an image first!");
-
-            resultDiv.innerText = "Analyzing...";
-
-            try {
-                const client = await Client.connect("DANIELNICHOLASDILLI/Weight_Mdel");
-                const result = await client.predict("/classify_image", {
-                    img: file, // File object acts as a Blob
-                });
-
-                resultDiv.innerText = JSON.stringify(result.data, null, 2);
-            } catch (error) {
-                resultDiv.innerText = "Error: " + error.message;
-                console.error(error);
-            }
-        });
-    </script>
 </head>
 <body>
     <h1>Hugging Face Image Classifier</h1>
     <input type="file" id="imageInput" accept="image/*">
     <button id="uploadBtn">Classify Image</button>
     <pre id="result">Result will appear here...</pre>
+
+    <!-- Notice type="module" is required for CDN imports -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
