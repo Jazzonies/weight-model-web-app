@@ -1,25 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Classifier</title>
-    <style>
-        #preview { max-width: 300px; max-height: 300px; display: none; margin: 15px 0; }
-    </style>
-</head>
-<body>
-    <h1>Hugging Face Image Classifier</h1>
-    
-    <input type="file" id="imageInput" accept="image/*">
-    <br>
-    <!-- Visual anchor for image preview -->
-    <img id="preview" alt="Image preview">
-    <br>
-    <button id="uploadBtn">Classify Image</button>
-    
-    <pre id="result">Result will appear here...</pre>
 
-    <script type="module" src="app.js"></script>
+    <title>Weight Classification AI</title>
+
+    <meta name="theme-color" content="#2563eb">
+
+    <meta name="description"
+        content="AI Powered Weight Classification">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <main class="container">
+
+        <header>
+
+            <div class="logo">
+
+                🧠
+
+            </div>
+
+            <h1>Weight Classification AI</h1>
+
+            <p>
+
+                Upload an image to classify weight using our
+                Hugging Face AI model.
+
+            </p>
+
+        </header>
+
+        <section class="glass upload-card">
+
+            <div id="dropArea">
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/png,image/jpeg,image/webp"
+                    hidden>
+
+                <div class="uploadIcon">
+
+                    📤
+
+                </div>
+
+                <h2>
+
+                    Drag & Drop Image
+
+                </h2>
+
+                <p>
+
+                    or click to browse
+
+                </p>
+
+                <button id="browseBtn">
+
+                    Browse Image
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <section
+            id="previewSection"
+            class="glass hidden">
+
+            <img
+                id="previewImage">
+
+            <div class="previewInfo">
+
+                <h3 id="fileName"></h3>
+
+                <p id="imageSize"></p>
+
+                <button
+                    id="removeImage">
+
+                    Remove Image
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <section
+            id="loadingSection"
+            class="glass hidden">
+
+            <div class="spinner"></div>
+
+            <h2>
+
+                Analyzing Image
+
+            </h2>
+
+            <p id="loadingText">
+
+                Uploading...
+
+            </p>
+
+            <div class="progress">
+
+                <div
+                    id="progressBar"></div>
+
+            </div>
+
+        </section>
+
+        <section
+            id="resultSection"
+            class="glass hidden">
+
+            <h2>
+
+                Prediction
+
+            </h2>
+
+            <div class="predictionCard">
+
+                <span id="prediction">
+
+                    -
+
+                </span>
+
+                <span id="confidence">
+
+                    -
+
+                </span>
+
+            </div>
+
+            <div
+                id="allPredictions">
+
+            </div>
+
+            <div class="buttons">
+
+                <button
+                    id="copyBtn">
+
+                    Copy Result
+
+                </button>
+
+                <button
+                    id="downloadBtn">
+
+                    Download JSON
+
+                </button>
+
+                <button
+                    id="newPrediction">
+
+                    Analyze Another
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <section
+            id="errorSection"
+            class="glass hidden">
+
+            <h2>
+
+                Something went wrong
+
+            </h2>
+
+            <p id="errorMessage"></p>
+
+            <button
+                id="retryBtn">
+
+                Retry
+
+            </button>
+
+        </section>
+
+    </main>
+
+    <script
+        type="module"
+        src="script.js">
+    </script>
+
 </body>
+
 </html>
