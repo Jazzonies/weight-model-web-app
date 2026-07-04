@@ -1,33 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weight Model Predictor</title>
-    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
-  </head>
-  <body>
-    <header>
-        <h1>Weight Model Predictor</h1>
-        <p>API hosted by <a href="https://huggingface.co" target="_blank">Hugging Face</a></p>
-    </header>
-    <main>
-        <header>
-            <h2>Submit a picture for classification</h2>
-            <!-- Containers to show results -->
-            <p id="prediction" style="font-weight: bold; color: #007bff;"></p>
-            <p id="confidences"></p>
-            <p id="status_msg" style="color: #666;"></p>
-        </header>
-        <section>
-            <img id="myImage" height="400" width="400" style="display:none; object-fit: contain; margin-bottom: 20px;">
-            <form id="form">
-                <label for="fileInput">Choose Image File:</label>
-                <input id="fileInput" type="file" onchange="onFileSelected(event)" name="File">
-            </form>
-        </section>
-    </main>
-    <!-- Change index.js to app.js to match your filename structure -->
-    <script src="app.js"></script>
-  </body>
+    <title>Image Classifier</title>
+    <!-- Import Gradio Client directly via CDN -->
+    <script type="module">
+        import { Client } from "https://jsdelivr.net";
+
+        const imageInput = document.getElementById("imageInput");
+        const uploadBtn = document.getElementById("uploadBtn");
+        const resultDiv = document.getElementById("result");
+
+        uploadBtn.addEventListener("click", async () => {
+            const file = imageInput.files[0];
+            if (!file) return alert("Please select an image first!");
+
+            resultDiv.innerText = "Analyzing...";
+
+            try {
+                const client = await Client.connect("DANIELNICHOLASDILLI/Weight_Mdel");
+                const result = await client.predict("/classify_image", {
+                    img: file, // File object acts as a Blob
+                });
+
+                resultDiv.innerText = JSON.stringify(result.data, null, 2);
+            } catch (error) {
+                resultDiv.innerText = "Error: " + error.message;
+                console.error(error);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Hugging Face Image Classifier</h1>
+    <input type="file" id="imageInput" accept="image/*">
+    <button id="uploadBtn">Classify Image</button>
+    <pre id="result">Result will appear here...</pre>
+</body>
 </html>
