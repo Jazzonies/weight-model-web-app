@@ -360,18 +360,14 @@ font-weight:bold;
 
 }
 
-.prediction{
-
-font-size:28px;
-
+prediction{
+    font-size:28px;
 }
 
-.confidenceBar{
-
-margin:15px 0;
-
+confidence{
+    font-size:26px;
+    color:#22c55e;
 }
-
 .bar{
 
 height:14px;
