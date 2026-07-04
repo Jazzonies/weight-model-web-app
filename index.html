@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Model Predictor</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; line-height: 1.6; }
+        .container { background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+        #result { margin-top: 20px; font-weight: bold; padding: 10px; background: #e9ecef; border-left: 5px solid #007bff; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Weight Model Predictor</h2>
+        <label for="modelInput">Enter Model Input Data:</label>
+        <!-- Adjust the input placeholder or type based on your actual feature inputs -->
+        <input type="text" id="modelInput" placeholder="e.g., height, age, parameters...">
+        
+        <button id="predictBtn">Run Prediction</button>
+        <div id="result"></div>
+    </div>
+
+    <!-- Include your script asset as a module -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
