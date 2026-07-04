@@ -1,4 +1,3 @@
-// Browser-safe import method matching the @gradio/client package functionality
 import { Client } from "https://jsdelivr.net";
 
 const imageInput = document.getElementById("imageInput");
@@ -6,7 +5,6 @@ const preview = document.getElementById("preview");
 const uploadBtn = document.getElementById("uploadBtn");
 const resultDiv = document.getElementById("result");
 
-// Show preview when a file is selected
 imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
     if (file) {
@@ -17,26 +15,28 @@ imageInput.addEventListener("change", () => {
     }
 });
 
-// Send file to Hugging Face space API on click
 uploadBtn.addEventListener("click", async () => {
     const file = imageInput.files[0];
     if (!file) return alert("Please select an image first!");
 
-    resultDiv.innerText = "Analyzing...";
+    resultDiv.innerText = "Connecting to Hugging Face Space (This may take a moment if the Space is waking up)...";
 
     try {
-        // Connect directly to your space
         const client = await Client.connect("DANIELNICHOLASDILLI/Weight_Mdel");
         
-        // Matches your space guide: /classify_image endpoint and { img: blob } format
+        resultDiv.innerText = "Analyzing image...";
+        
         const result = await client.predict("/classify_image", {
             img: file, 
         });
 
-        // Output raw data response to screen
         resultDiv.innerText = JSON.stringify(result.data, null, 2);
     } catch (error) {
-        resultDiv.innerText = "Error: " + error.message;
+        if (error.message.includes("fetch") || error.toString().includes("timeout")) {
+            resultDiv.innerText = "Error: Connection timed out. Please visit https://huggingface.co to verify if the Space is running or waking up.";
+        } else {
+            resultDiv.innerText = "Error: " + error.message;
+        }
         console.error(error);
     }
 });
