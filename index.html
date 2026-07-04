@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Classifier</title>
+    <style>
+        #preview { max-width: 300px; max-height: 300px; display: none; margin: 15px 0; }
+    </style>
 </head>
 <body>
     <h1>Hugging Face Image Classifier</h1>
+    
     <input type="file" id="imageInput" accept="image/*">
+    <br>
+    <!-- Visual anchor for image preview -->
+    <img id="preview" alt="Image preview">
+    <br>
     <button id="uploadBtn">Classify Image</button>
+    
     <pre id="result">Result will appear here...</pre>
 
-    <!-- Notice type="module" is required for CDN imports -->
     <script type="module" src="app.js"></script>
 </body>
 </html>
