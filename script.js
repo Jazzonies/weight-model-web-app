@@ -413,8 +413,8 @@ async function predictImage() {
 
         }
 
-        const predictions =
-            parsePrediction(result.data);
+        console.log(result);
+        console.log(result.data);
 
         latestPrediction = predictions;
 
