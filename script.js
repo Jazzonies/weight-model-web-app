@@ -1,604 +1,104 @@
-// ======================================================
-// Weight Classification AI
-// script.js
-// Chunk 1
-// ======================================================
+import { Client, handle_file } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
 
-// -------------------------
-// Configuration
-// -------------------------
+const client = await Client.connect("DANIELNICHOLASDILLI/Test");
 
-const API_URL =
-    "https://danielnicholasdilli-weight-mdel.hf.space/predict";
+const chooseBtn = document.getElementById("chooseBtn");
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("preview");
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const predictBtn = document.getElementById("predictBtn");
 
-const ALLOWED_TYPES = [
-    "image/jpeg",
-    "image/png",
-    "image/webp"
-];
+const loading = document.getElementById("loading");
 
-// -------------------------
-// DOM
-// -------------------------
+const results = document.getElementById("results");
 
-const imageInput =
-    document.getElementById("imageInput");
+const prediction = document.getElementById("prediction");
 
-const dropArea =
-    document.getElementById("dropArea");
+const confidence = document.getElementById("confidence");
 
-const previewSection =
-    document.getElementById("previewSection");
+const topPredictions = document.getElementById("topPredictions");
 
-const previewImage =
-    document.getElementById("previewImage");
+chooseBtn.onclick = ()=>imageInput.click();
 
-const fileName =
-    document.getElementById("fileName");
+let selectedFile;
 
-const imageSize =
-    document.getElementById("imageSize");
+imageInput.onchange = ()=>{
 
-const removeBtn =
-    document.getElementById("removeBtn");
+    selectedFile=imageInput.files[0];
 
-const loadingSection =
-    document.getElementById("loadingSection");
+    preview.src=URL.createObjectURL(selectedFile);
 
-const loadingText =
-    document.getElementById("loadingText");
+    preview.hidden=false;
+};
 
-const progressBar =
-    document.getElementById("progressBar");
+predictBtn.onclick = async()=>{
 
-const resultSection =
-    document.getElementById("resultSection");
+    if(!selectedFile){
 
-const prediction =
-    document.getElementById("prediction");
-
-const confidence =
-    document.getElementById("confidence");
-
-const confidenceContainer =
-    document.getElementById("confidenceContainer");
-
-const errorSection =
-    document.getElementById("errorSection");
-
-const errorMessage =
-    document.getElementById("errorMessage");
-
-const retryBtn =
-    document.getElementById("retryBtn");
-
-const copyBtn =
-    document.getElementById("copyBtn");
-
-const downloadBtn =
-    document.getElementById("downloadBtn");
-
-const newBtn =
-    document.getElementById("newBtn");
-
-// -------------------------
-// Variables
-// -------------------------
-
-let selectedImage = null;
-
-let latestResult = null;
-
-let isRunning = false;
-
-// -------------------------
-// Initialization
-// -------------------------
-
-hideError();
-hideLoading();
-hideResults();
-
-// -------------------------
-// Upload Events
-// -------------------------
-
-imageInput.addEventListener(
-    "change",
-    (e) => {
-
-        if (!e.target.files.length)
-            return;
-
-        processFile(
-            e.target.files[0]
-        );
-
-    }
-);
-
-// -------------------------
-// Drag Events
-// -------------------------
-
-dropArea.addEventListener(
-    "dragover",
-    (e) => {
-
-        e.preventDefault();
-
-        dropArea.classList.add(
-            "dragging"
-        );
-
-    }
-);
-
-dropArea.addEventListener(
-    "dragleave",
-    () => {
-
-        dropArea.classList.remove(
-            "dragging"
-        );
-
-    }
-);
-
-dropArea.addEventListener(
-    "drop",
-    (e) => {
-
-        e.preventDefault();
-
-        dropArea.classList.remove(
-            "dragging"
-        );
-
-        const file =
-            e.dataTransfer.files[0];
-
-        if (!file)
-            return;
-
-        processFile(file);
-
-    }
-);
-
-// -------------------------
-// Remove
-// -------------------------
-
-removeBtn.addEventListener(
-    "click",
-    resetApp
-);
-
-// -------------------------
-// Retry
-// -------------------------
-
-retryBtn.addEventListener(
-    "click",
-    () => {
-
-        hideError();
-
-        if (selectedImage)
-            predict();
-
-    }
-);
-
-// -------------------------
-// New Prediction
-// -------------------------
-
-newBtn.addEventListener(
-    "click",
-    resetApp
-);
-
-// -------------------------
-// Process File
-// -------------------------
-
-function processFile(file) {
-
-    if (isRunning)
-        return;
-
-    hideError();
-
-    if (
-        !ALLOWED_TYPES.includes(
-            file.type
-        )
-    ) {
-
-        showError(
-            "Only JPG, PNG and WEBP files are supported."
-        );
+        alert("Please choose an image.");
 
         return;
-
     }
 
-    if (
-        file.size >
-        MAX_FILE_SIZE
-    ) {
+    loading.hidden=false;
 
-        showError(
-            "Maximum image size is 10 MB."
-        );
+    results.hidden=true;
 
-        return;
+    try{
 
-    }
+        const result=await client.predict("/classify_image",{
 
-    selectedImage = file;
-
-    showPreview(file);
-
-}
-
-// -------------------------
-// Preview
-// -------------------------
-
-function showPreview(file) {
-
-    const reader =
-        new FileReader();
-
-    reader.onload = e => {
-
-        previewImage.src =
-            e.target.result;
-
-    };
-
-    reader.readAsDataURL(file);
-
-    previewSection.classList.remove(
-        "hidden"
-    );
-
-    fileName.textContent =
-        file.name;
-
-    imageSize.textContent =
-        formatFileSize(file.size);
-
-    setTimeout(
-        predict,
-        300
-    );
-
-}
-
-// -------------------------
-// Helpers
-// -------------------------
-
-function formatFileSize(bytes) {
-
-    if (bytes < 1024)
-        return bytes + " Bytes";
-
-    if (bytes < 1048576)
-        return (
-            bytes / 1024
-        ).toFixed(2) + " KB";
-
-    return (
-        bytes / 1048576
-    ).toFixed(2) + " MB";
-
-}
-
-function resetApp() {
-
-    imageInput.value = "";
-
-    selectedImage = null;
-
-    latestResult = null;
-
-    previewImage.src = "";
-
-    previewSection.classList.add(
-        "hidden"
-    );
-
-    hideLoading();
-
-    hideResults();
-
-    hideError();
-
-}
-
-function showLoading() {
-
-    loadingSection.classList.remove(
-        "hidden"
-    );
-
-}
-
-function hideLoading() {
-
-    loadingSection.classList.add(
-        "hidden"
-    );
-
-}
-
-function hideResults() {
-
-    resultSection.classList.add(
-        "hidden"
-    );
-
-}
-
-function showResults() {
-
-    resultSection.classList.remove(
-        "hidden"
-    );
-
-}
-
-function showError(message) {
-
-    errorMessage.textContent =
-        message;
-
-    errorSection.classList.remove(
-        "hidden"
-    );
-
-}
-
-function hideError() {
-
-    errorSection.classList.add(
-        "hidden"
-    );
-
-}
-// ======================================================
-// Chunk 2
-// Prediction + API + Progress
-// ======================================================
-
-const loadingMessages = [
-    "Uploading image...",
-    "Preparing AI model...",
-    "Analyzing image...",
-    "Computing confidence...",
-    "Finalizing prediction..."
-];
-
-let progressTimer = null;
-let messageTimer = null;
-
-// --------------------------------
-// Main Prediction Function
-// --------------------------------
-
-async function predict() {
-
-    if (!selectedImage) return;
-
-    if (isRunning) return;
-
-    isRunning = true;
-
-    hideError();
-    hideResults();
-    showLoading();
-
-    startProgress();
-
-    try {
-
-        const formData = new FormData();
-
-        formData.append("file", selectedImage);
-
-        const response = await fetch(API_URL, {
-
-            method: "POST",
-
-            body: formData
+            im:handle_file(selectedFile)
 
         });
 
-        if (!response.ok) {
+        loading.hidden=true;
 
-            throw new Error(
-                `Server returned ${response.status}`
-            );
+        results.hidden=false;
 
-        }
+        const output=result.data[0];
 
-        const result = await response.json();
+        prediction.innerHTML=output.label;
 
-        latestResult = result;
+        confidence.innerHTML=
+            "Confidence: "+
+            (output.confidences[0].confidence*100).toFixed(2)
+            +"%";
 
-        stopProgress();
+        topPredictions.innerHTML="";
 
-        renderPrediction(result);
+        output.confidences.forEach(item=>{
 
-    }
+            topPredictions.innerHTML+=`
 
-    catch (err) {
+            <div class="prediction-row">
 
-        console.error(err);
+                <strong>${item.label}</strong>
 
-        stopProgress();
+                (${(item.confidence*100).toFixed(2)}%)
 
-        showError(
-            err.message ||
-            "Prediction failed."
-        );
+                <div class="bar">
 
-    }
-
-    finally {
-
-        hideLoading();
-
-        isRunning = false;
-
-    }
-
-}
-
-// --------------------------------
-// Progress Animation
-// --------------------------------
-
-function startProgress() {
-
-    progressBar.style.width = "0%";
-
-    let width = 0;
-
-    let message = 0;
-
-    loadingText.textContent =
-        loadingMessages[0];
-
-    progressTimer = setInterval(() => {
-
-        if (width < 92) {
-
-            width += Math.random() * 8;
-
-            progressBar.style.width =
-                width + "%";
-
-        }
-
-    }, 250);
-
-    messageTimer = setInterval(() => {
-
-        message++;
-
-        loadingText.textContent =
-            loadingMessages[
-                message %
-                loadingMessages.length
-            ];
-
-    }, 1200);
-
-}
-
-// --------------------------------
-// Stop Progress
-// --------------------------------
-
-function stopProgress() {
-
-    clearInterval(progressTimer);
-
-    clearInterval(messageTimer);
-
-    progressBar.style.width = "100%";
-
-}
-
-// --------------------------------
-// Render Prediction
-// --------------------------------
-
-function renderPrediction(result) {
-
-    if (!result.prediction) {
-
-        throw new Error(
-            "Invalid API response."
-        );
-
-    }
-
-    prediction.textContent =
-        result.prediction;
-
-    const scores =
-        Object.entries(result.scores)
-
-            .sort(
-                (a, b) =>
-                b[1] - a[1]
-            );
-
-    confidence.textContent =
-        scores[0][1].toFixed(2) + "%";
-
-    confidenceContainer.innerHTML = "";
-
-    scores.forEach(([label, score]) => {
-
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "confidenceBar";
-
-        row.innerHTML = `
-
-            <div
-                style="
-                display:flex;
-                justify-content:space-between;
-                margin-bottom:6px;
-                ">
-
-                <span>${label}</span>
-
-                <span>${score.toFixed(2)}%</span>
-
-            </div>
-
-            <div class="bar">
-
-                <div
+                    <div
                     class="fill"
-                    style="width:0%">
+                    style="width:${item.confidence*100}%">
+                    </div>
 
                 </div>
 
             </div>
 
-        `;
-
-        confidenceContainer.appendChild(
-            row
-        );
-
-        const fill =
-            row.querySelector(".fill");
-
-        requestAnimationFrame(() => {
-
-            fill.style.width =
-                score + "%";
+            `;
 
         });
 
-    });
+    }
 
-    showResults();
+    catch(error){
 
-}
+        loading.hidden=true;
+
+        alert(error);
+    }
+
+};
