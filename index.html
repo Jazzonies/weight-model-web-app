@@ -1,243 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Weight Classification AI</title>
-
-    <meta name="description" content="AI Powered Weight Classification">
-
-    <meta name="theme-color" content="#2563eb">
+    <title>Plant Disease Classifier</title>
 
     <link rel="stylesheet" href="style.css">
 
+    <script type="module" src="script.js"></script>
 </head>
-
 <body>
 
-    <div class="background"></div>
+<div class="container">
 
-    <main class="container">
+    <h1>🌿 Plant Disease Classifier</h1>
+    <p>Upload a leaf image for instant disease prediction.</p>
 
-        <header>
+    <div class="upload-box" id="dropArea">
 
-            <div class="logo">
-                🧠
-            </div>
+        <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+            hidden>
 
-            <h1>Weight Classification AI</h1>
+        <img id="preview" hidden>
 
-            <p>
-                Upload an image and let AI classify the animal.
-            </p>
+        <p id="uploadText">
+            Drag & Drop an image here
+            <br>
+            or
+        </p>
 
-        </header>
+        <button id="chooseBtn">
+            Choose Image
+        </button>
 
-        <!-- Upload Card -->
+    </div>
 
-        <section class="glass">
+    <button id="predictBtn">
+        Predict
+    </button>
 
-            <label id="dropArea">
+    <div id="loading" hidden>
 
-                <input
-                    type="file"
-                    id="imageInput"
-                    accept="image/png,image/jpeg,image/webp"
-                    hidden>
+        <div class="spinner"></div>
 
-                <div class="uploadIcon">
+        <p>Predicting...</p>
 
-                    📤
+    </div>
 
-                </div>
+    <div id="results" hidden>
 
-                <h2>
+        <h2>Prediction</h2>
 
-                    Drag & Drop Image
+        <h3 id="prediction"></h3>
 
-                </h2>
+        <p id="confidence"></p>
 
-                <p>
+        <div id="topPredictions"></div>
 
-                    or click anywhere here to browse
+    </div>
 
-                </p>
-
-            </label>
-
-        </section>
-
-        <!-- Preview -->
-
-        <section
-            class="glass hidden"
-            id="previewSection">
-
-            <img
-                id="previewImage"
-                alt="Preview">
-
-            <div class="previewInfo">
-
-                <h2 id="fileName">
-
-                </h2>
-
-                <p id="imageSize">
-
-                </p>
-
-                <button
-                    id="removeBtn">
-
-                    Remove Image
-
-                </button>
-
-            </div>
-
-        </section>
-
-        <!-- Loading -->
-
-        <section
-            class="glass hidden"
-            id="loadingSection">
-
-            <div class="spinner"></div>
-
-            <h2>
-
-                AI is analyzing your image...
-
-            </h2>
-
-            <p
-                id="loadingText">
-
-                Uploading...
-
-            </p>
-
-            <div class="progress">
-
-                <div
-                    id="progressBar">
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Results -->
-
-        <section
-            class="glass hidden"
-            id="resultSection">
-
-            <h2>
-
-                Prediction
-
-            </h2>
-
-            <div class="predictionCard">
-
-                <div>
-
-                    <div class="label">
-
-                        Predicted Class
-
-                    </div>
-
-                    <div id="prediction">
-
-                        -
-
-                    </div>
-
-                </div>
-
-                <div>
-
-                    <div class="label">
-
-                        Confidence
-
-                    </div>
-
-                    <div id="confidence">
-
-                        -
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div
-                id="confidenceContainer">
-
-            </div>
-
-            <div class="buttons">
-
-                <button id="copyBtn">
-
-                    📋 Copy Result
-
-                </button>
-
-                <button id="downloadBtn">
-
-                    💾 Download JSON
-
-                </button>
-
-                <button id="newBtn">
-
-                    🔄 Analyze Another
-
-                </button>
-
-            </div>
-
-        </section>
-
-        <!-- Error -->
-
-        <section
-            class="glass hidden"
-            id="errorSection">
-
-            <h2>
-
-                ⚠️ Error
-
-            </h2>
-
-            <p id="errorMessage">
-
-            </p>
-
-            <button id="retryBtn">
-
-                Retry
-
-            </button>
-
-        </section>
-
-    </main>
-
-    <script src="script.js"></script>
+</div>
 
 </body>
-
 </html>
