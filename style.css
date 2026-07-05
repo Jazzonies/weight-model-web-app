@@ -512,3 +512,43 @@ transform:scale(1.02);
 transition:.25s;
 
 }
+.confidenceBar{
+
+margin:18px 0;
+
+}
+
+.confidenceBar span{
+
+font-size:15px;
+
+}
+
+.bar{
+
+height:12px;
+
+background:rgba(255,255,255,.08);
+
+border-radius:12px;
+
+overflow:hidden;
+
+}
+
+.fill{
+
+height:100%;
+
+width:0;
+
+border-radius:12px;
+
+background:linear-gradient(
+90deg,
+#2563eb,
+#22c55e);
+
+transition:width 1s ease;
+
+}
