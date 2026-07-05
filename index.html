@@ -8,10 +8,9 @@
 
     <title>Weight Classification AI</title>
 
-    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="AI Powered Weight Classification">
 
-    <meta name="description"
-        content="AI Powered Weight Classification">
+    <meta name="theme-color" content="#2563eb">
 
     <link rel="stylesheet" href="style.css">
 
@@ -26,25 +25,22 @@
         <header>
 
             <div class="logo">
-
                 🧠
-
             </div>
 
             <h1>Weight Classification AI</h1>
 
             <p>
-
-                Upload an image to classify weight using our
-                Hugging Face AI model.
-
+                Upload an image and let AI classify the animal.
             </p>
 
         </header>
 
-        <section class="glass upload-card">
+        <!-- Upload Card -->
 
-            <div id="dropArea">
+        <section class="glass">
+
+            <label id="dropArea">
 
                 <input
                     type="file"
@@ -66,35 +62,36 @@
 
                 <p>
 
-                    or click to browse
+                    or click anywhere here to browse
 
                 </p>
 
-                <button id="browseBtn">
-
-                    Browse Image
-
-                </button>
-
-            </div>
+            </label>
 
         </section>
 
+        <!-- Preview -->
+
         <section
-            id="previewSection"
-            class="glass hidden">
+            class="glass hidden"
+            id="previewSection">
 
             <img
-                id="previewImage">
+                id="previewImage"
+                alt="Preview">
 
             <div class="previewInfo">
 
-                <h3 id="fileName"></h3>
+                <h2 id="fileName">
 
-                <p id="imageSize"></p>
+                </h2>
+
+                <p id="imageSize">
+
+                </p>
 
                 <button
-                    id="removeImage">
+                    id="removeBtn">
 
                     Remove Image
 
@@ -104,19 +101,22 @@
 
         </section>
 
+        <!-- Loading -->
+
         <section
-            id="loadingSection"
-            class="glass hidden">
+            class="glass hidden"
+            id="loadingSection">
 
             <div class="spinner"></div>
 
             <h2>
 
-                Analyzing Image
+                AI is analyzing your image...
 
             </h2>
 
-            <p id="loadingText">
+            <p
+                id="loadingText">
 
                 Uploading...
 
@@ -125,15 +125,19 @@
             <div class="progress">
 
                 <div
-                    id="progressBar"></div>
+                    id="progressBar">
+
+                </div>
 
             </div>
 
         </section>
 
+        <!-- Results -->
+
         <section
-            id="resultSection"
-            class="glass hidden">
+            class="glass hidden"
+            id="resultSection">
 
             <h2>
 
@@ -143,45 +147,62 @@
 
             <div class="predictionCard">
 
-                <span id="prediction">
+                <div>
 
-                    -
+                    <div class="label">
 
-                </span>
+                        Predicted Class
 
-                <span id="confidence">
+                    </div>
 
-                    -
+                    <div id="prediction">
 
-                </span>
+                        -
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="label">
+
+                        Confidence
+
+                    </div>
+
+                    <div id="confidence">
+
+                        -
+
+                    </div>
+
+                </div>
 
             </div>
 
             <div
-                id="allPredictions">
+                id="confidenceContainer">
 
             </div>
 
             <div class="buttons">
 
-                <button
-                    id="copyBtn">
+                <button id="copyBtn">
 
-                    Copy Result
-
-                </button>
-
-                <button
-                    id="downloadBtn">
-
-                    Download JSON
+                    📋 Copy Result
 
                 </button>
 
-                <button
-                    id="newPrediction">
+                <button id="downloadBtn">
 
-                    Analyze Another
+                    💾 Download JSON
+
+                </button>
+
+                <button id="newBtn">
+
+                    🔄 Analyze Another
 
                 </button>
 
@@ -189,20 +210,23 @@
 
         </section>
 
+        <!-- Error -->
+
         <section
-            id="errorSection"
-            class="glass hidden">
+            class="glass hidden"
+            id="errorSection">
 
             <h2>
 
-                Something went wrong
+                ⚠️ Error
 
             </h2>
 
-            <p id="errorMessage"></p>
+            <p id="errorMessage">
 
-            <button
-                id="retryBtn">
+            </p>
+
+            <button id="retryBtn">
 
                 Retry
 
@@ -212,10 +236,7 @@
 
     </main>
 
-    <script
-        type="module"
-        src="script.js">
-    </script>
+    <script src="script.js"></script>
 
 </body>
 
