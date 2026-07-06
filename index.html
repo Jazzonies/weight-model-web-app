@@ -3,66 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Disease Classifier</title>
-
+    <title>Image Predictor</title>
     <link rel="stylesheet" href="style.css">
-
-    <script type="module" src="script.js"></script>
 </head>
 <body>
 
-<div class="container">
+<h2>Image Predictor</h2>
 
-    <h1>🌿 Plant Disease Classifier</h1>
-    <p>Upload a leaf image for instant disease prediction.</p>
+<input type="file" id="imageInput" accept="image/*">
 
-    <div class="upload-box" id="dropArea">
+<br><br>
 
-        <input
-            type="file"
-            id="imageInput"
-            accept="image/*"
-            hidden>
+<button id="predictBtn">Predict</button>
 
-        <img id="preview" hidden>
+<br><br>
 
-        <p id="uploadText">
-            Drag & Drop an image here
-            <br>
-            or
-        </p>
+<p id="status"></p>
 
-        <button id="chooseBtn">
-            Choose Image
-        </button>
+<h3 id="prediction"></h3>
 
-    </div>
-
-    <button id="predictBtn">
-        Predict
-    </button>
-
-    <div id="loading" hidden>
-
-        <div class="spinner"></div>
-
-        <p>Predicting...</p>
-
-    </div>
-
-    <div id="results" hidden>
-
-        <h2>Prediction</h2>
-
-        <h3 id="prediction"></h3>
-
-        <p id="confidence"></p>
-
-        <div id="topPredictions"></div>
-
-    </div>
-
-</div>
+<script src="script.js"></script>
 
 </body>
 </html>
