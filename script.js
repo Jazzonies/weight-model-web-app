@@ -1,28 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Predictor</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+const SPACE_URL = "https://danielnicholasdilli-test.hf.space";
 
-<h2>Image Predictor</h2>
+const imageInput = document.getElementById("imageInput");
+const predictBtn = document.getElementById("predictBtn");
 
-<input type="file" id="imageInput" accept="image/*">
+const status = document.getElementById("status");
+const prediction = document.getElementById("prediction");
 
-<br><br>
+predictBtn.onclick = async () => {
 
-<button id="predictBtn">Predict</button>
+    const file = imageInput.files[0];
 
-<br><br>
+    if (!file) {
+        alert("Please choose an image.");
+        return;
+    }
 
-<p id="status"></p>
+    prediction.innerHTML = "";
+    status.innerHTML = "Uploading image...";
 
-<h3 id="prediction"></h3>
+    try {
 
-<script src="script.js"></script>
+        // STEP 1 - Upload image
+        const formData = new FormData();
+        formData.append("files", file);
 
-</body>
-</html>
+        const uploadResponse = await fetch(
+            `${SPACE_URL}/gradio_api/upload`,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const uploadResult = await uploadResponse.json();
+
+        console.log("Upload:", uploadResult);
+
+        const uploadedPath = uploadResult[0];
+
+        // STEP 2 - Start prediction
+
+        status.innerHTML = "Running prediction...";
+
+        const predictResponse = await fetch(
+            `${SPACE_URL}/gradio_api/call/v2/classify_image`,
+            {
+                method: "POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify({
+                    im:{
+                        path: uploadedPath,
+                        meta:{
+                            _type:"gradio.FileData"
+                        }
+                    }
+                })
+            }
+        );
+
+        const predictResult = await predictResponse.json();
+
+        console.log("Predict:", predictResult);
+
+        const eventID = predictResult.event_id;
+
+        status.innerHTML = "Waiting for model...";
+
+        // STEP 3 - Read SSE result
+
+        const eventSource = new EventSource(
+            `${SPACE_URL}/gradio_api/call/classify_image/${eventID}`
+        );
+
+        eventSource.onmessage = function(event){
+
+            console.log(event.data);
+
+        };
+
+        eventSource.addEventListener("complete",(event)=>{
+
+            const output = JSON.parse(event.data)[0];
+
+            console.log(output);
+
+            prediction.innerHTML =
+                output.label +
+                "<br><br>" +
+                (output.confidences[0].confidence*100).toFixed(2)+"%";
+
+            status.innerHTML = "Done";
+
+            eventSource.close();
+
+        });
+
+    }
+    catch(err){
+
+        console.error(err);
+
+        status.innerHTML = "Error";
+
+    }
+
+};
